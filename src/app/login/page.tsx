@@ -1,15 +1,22 @@
 "use client";
 
-import { useEffect } from "react";
+import { useAuthStore } from "@/lib/store";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
-export default function Home() {
+export default function LoginPage() {
   const router = useRouter();
-
+  const { isAuthenticated, initDefaultUser } = useAuthStore();
+  
   useEffect(() => {
-    // Redirect langsung ke dashboard
+    // Jika belum login, auto login dengan user default
+    if (!isAuthenticated) {
+      initDefaultUser();
+    }
+    
+    // Redirect ke dashboard
     router.replace("/dashboard");
-  }, [router]);
+  }, [isAuthenticated, initDefaultUser, router]);
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50">
