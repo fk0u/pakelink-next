@@ -2,10 +2,12 @@
 
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, MoreVertical } from "lucide-react";
+import { Bell, Menu } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { Sidebar } from "./sidebar";
+import { ThemeToggle } from "@/components/theme/theme-toggle";
+import { UserProfileMenu } from "@/components/auth/user-profile-menu";
 
 export function TopBar() {
   const [sheetOpen, setSheetOpen] = useState(false);
@@ -32,10 +34,12 @@ export function TopBar() {
               <Sidebar />
             </SheetContent>
           </Sheet>
+          <ThemeToggle />
           <Button variant="ghost" size="icon">
-            <MoreVertical className="h-5 w-5" />
-            <span className="sr-only">More</span>
+            <Bell className="h-5 w-5" />
+            <span className="sr-only">Notifications</span>
           </Button>
+          <UserProfileMenu />
         </div>
       </div>
     </div>

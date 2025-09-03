@@ -20,12 +20,13 @@ import {
 import * as React from "react";
 
 import { Button } from "@/components/ui/button";
+// Using relative path instead of alias to fix import issues
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "../../components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import {
   Select,

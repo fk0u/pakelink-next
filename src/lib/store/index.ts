@@ -59,8 +59,10 @@ export const useAuthStore = create<AuthState>()(
 interface UIState {
   sidebarOpen: boolean;
   isDarkMode: boolean;
+  theme: 'light' | 'dark' | 'system';
   toggleSidebar: () => void;
   toggleDarkMode: () => void;
+  setTheme: (theme: 'light' | 'dark' | 'system') => void;
 }
 
 // UI Store
@@ -69,8 +71,10 @@ export const useUIStore = create<UIState>()(
     (set) => ({
       sidebarOpen: true,
       isDarkMode: false,
+      theme: 'system',
       toggleSidebar: () => set((state) => ({ sidebarOpen: !state.sidebarOpen })),
-      toggleDarkMode: () => set((state) => ({ isDarkMode: !state.isDarkMode }))
+      toggleDarkMode: () => set((state) => ({ isDarkMode: !state.isDarkMode })),
+      setTheme: (theme) => set({ theme })
     }),
     {
       name: 'pakelink-ui'

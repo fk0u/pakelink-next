@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { DataTable } from "@/components/dashboard/data-table";
-import { useAuthStore, UserRole } from "@/lib/store";
+import { AddCompanyDialog } from "@/components/companies/add-company-dialog";
 import { 
   Building2, 
   ExternalLink, 
@@ -17,7 +17,6 @@ import {
   MapPin, 
   MoreHorizontal, 
   Phone, 
-  Plus, 
   Search, 
   Star, 
   User, 
@@ -25,6 +24,7 @@ import {
 } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
 import { useState } from "react";
+import { useLocalStorage } from "@/lib/hooks/useLocalStorage";
 
 // Interface untuk data tempat PKL
 interface Company {
@@ -197,8 +197,13 @@ function RatingStars({ rating }: { rating?: number }) {
 }
 
 export default function CompaniesPage() {
-  const { user } = useAuthStore();
+  const [companies, setCompanies] = useLocalStorage<Company[]>("user-companies", sampleCompanies);
   const [searchQuery, setSearchQuery] = useState("");
+
+  // Add new company function
+  const handleAddCompany = (newCompany: Company) => {
+    setCompanies([...companies, newCompany]);
+  };
 
   // Definisi kolom untuk tabel perusahaan
   const columns: ColumnDef<Company>[] = [
@@ -321,22 +326,17 @@ export default function CompaniesPage() {
 
   // Data untuk kartu ringkasan
   const summaryData = {
-    total: sampleCompanies.length,
-    active: sampleCompanies.filter(c => c.status === "active").length,
-    inactive: sampleCompanies.filter(c => c.status === "inactive").length,
-    students: sampleCompanies.reduce((sum, company) => sum + company.currentStudents, 0),
+    total: companies.length,
+    active: companies.filter(c => c.status === "active").length,
+    inactive: companies.filter(c => c.status === "inactive").length,
+    students: companies.reduce((sum, company) => sum + company.currentStudents, 0),
   };
 
   return (
     <div className="flex-1 space-y-4 p-4 md:p-6">
       <div className="flex items-center justify-between">
         <h2 className="text-3xl font-bold tracking-tight">Tempat PKL</h2>
-        {user?.role === UserRole.ADMIN && (
-          <Button>
-            <Plus className="mr-2 h-4 w-4" />
-            Tambah Tempat PKL
-          </Button>
-        )}
+        <AddCompanyDialog onAddCompany={handleAddCompany} />
       </div>
 
       {/* Summary Cards - Layout with golden ratio */}
